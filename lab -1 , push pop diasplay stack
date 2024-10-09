@@ -1,0 +1,63 @@
+#include <stdio.h>
+#define SIZE 5
+
+int stack [SIZE],top = -1;
+void push (int value){
+    if(top == SIZE -1){
+        printf("stack overflow! can't push %d onto the stack",value);
+    }else{
+        top ++;
+        stack[top] = value;
+        printf("%d pushed onto the stack.",value);
+    }
+}
+
+void pop(){
+    if(top == -1){
+        printf("stack underflow! no number to pop");
+    }else{
+        printf("%d popped from stack",stack[top]);
+        top--;
+    }
+}
+
+void display(){
+    if(top == -1){
+        printf("stack underflow! stack is empty");
+    }else{
+        printf("stack elements:\n");
+        for(int i = top;i >= 0; i--){
+            printf("%d\n",stack[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main(){
+    int task, value;
+    while(1){
+        printf("\n1.Push\n2.Pop\n3.Display\n4.Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d",&task);
+
+        switch(task){
+        case 1:
+            printf("enter value for push:");
+            scanf("%d",&value);
+            push(value);
+            break;
+        case 2:
+            pop();
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            printf("Closing ....\n");
+            return 0;
+        default:
+            printf("Ïnvalid task number");
+        }
+    }
+
+}
