@@ -1,0 +1,82 @@
+#include <stdio.h>
+#define max 100
+
+char stack[max];
+int top = -1;
+
+void push(char ch){
+    stack[++top] = ch;
+}
+
+char pop(){
+    if (top == -1) {
+        printf("Stack underflow!\n");
+        return '\0';
+    }
+    return stack[top--];
+}
+
+char peek(){
+    if (top == -1) {
+        printf("Stack is empty!\n");
+        return '\0';
+    }
+    return stack[top];
+}
+
+int precedence(char op){
+    if (op == '+' || op == '-') {
+        return 1;
+    }
+    if (op == '*' || op == '/') {
+        return 2;
+    }
+    return 0;
+}
+
+void infixtopostfix(char infix[], char postfix[]) {
+    int i = 0, k = 0;
+    
+    while (infix[i] != '\0') {
+        char ch = infix[i];
+        
+        if (ch >= 'a' && ch <= 'z') {
+            postfix[k++] = ch;
+        }
+        else if (ch == '(') {
+            push(ch);
+        }
+        else if (ch == ')') {
+            while (top != -1 && peek() != '(') {
+                postfix[k++] = pop();
+            }
+            pop();
+        }
+        else {
+            while (top != -1 && precedence(peek()) >= precedence(ch)) {
+                postfix[k++] = pop();
+            }
+            push(ch);
+        }
+        i++;
+    }
+    
+    while (top != -1) {
+        postfix[k++] = pop();
+    }
+    
+    postfix[k] = '\0';
+}
+
+int main() {
+    char infix[max], postfix[max];
+    
+    printf("Enter your expression: ");
+    scanf("%s", infix);
+    
+    infixtopostfix(infix, postfix);
+    
+    printf("Postfix expression: %s\n", postfix);
+    
+    return 0;
+}
